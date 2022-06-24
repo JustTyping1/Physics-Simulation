@@ -7,6 +7,8 @@ global teal
 teal = (2, 245, 208)
 global navy
 navy = (4, 1, 66)
+global dgreen
+dgreen = (0, 64, 0)
 
 clock = pygame.time.Clock()
 
@@ -44,6 +46,7 @@ class Box():
         self.y += self.dy
 
         self.mybox = pygame.Rect(self.x, self.y, 32, 32)
+    
         
 
 pygame.display.set_caption("Physics simulator")
@@ -79,7 +82,7 @@ while running:
     window.fill(navy)
     player.draw(window)
     player.update()
+    pygame.draw.rect(window, dgreen, pygame.Rect(0, 360, 400, 40))
     pygame.display.flip()
-
     clock.tick(120)
 
