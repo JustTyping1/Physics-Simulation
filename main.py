@@ -26,7 +26,8 @@ class Box():
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False
-        self.down_pressed = False
+        self.down_pressed = True
+        self.gravity = 9.8
         self.speed = 4
     def draw(self, window):
         pygame.draw.rect(window, self.colour, self.mybox)
@@ -40,13 +41,22 @@ class Box():
         if self.up_pressed and not self.down_pressed:
             self.dy = -self.speed
         if self.down_pressed and not self.up_pressed:
-            self.dy = self.speed
+            self.dy = self.gravity
         
         self.x += self.dx
         self.y += self.dy
 
+        if self.y <= 0:
+            self.y = 0
+        if self.x <= 0:
+            self.x = 0
+        if self.x >= 368:
+            self.x = 368
+        if self.y >= 328:
+            self.y = 328
+
+
         self.mybox = pygame.Rect(self.x, self.y, 32, 32)
-    
         
 
 pygame.display.set_caption("Physics simulator")
