@@ -1,6 +1,35 @@
 import sys
 import pygame
 import math
+import tkinter as tk
+
+def run():
+    window = tk.Tk()
+
+    def getval():
+        global values
+        values = (gravityslider.get(), frictionslider.get())
+
+    window.title("Control Panel!")
+
+    val1 = tk.Label(text = "Gravity")
+    val1.pack()
+    global gravityslider
+    gravityslider = tk.Scale( from_ = 0, to_ = 30, orient = tk.HORIZONTAL)
+    gravityslider.pack()
+
+    val3 = tk.Label(text = "Friction")
+    val3.pack()
+    global frictionslider
+    frictionslider = tk.Scale(window, from_ = 0, to_ = 10, orient = tk.HORIZONTAL)
+    frictionslider.pack()
+
+    donebutton = tk.Button( text = "Apply", command=getval)
+    donebutton.pack()
+
+    window.mainloop()
+
+run()
 
 pygame.init()
 
@@ -30,10 +59,10 @@ class Box():
         self.up_pressed = False
         self.down_pressed = True
         self.mousefollow = False
-        self.gravity = float(input("WHAT IS THE GRAVITATIONAL ACCELERATION? \n >"))
+        self.gravity = values[0]
         self.speed = 4
         self.terminalvel = 798.8
-        self.friction = float(input("WHAT IS THE FORCE EXERTED BY FRICTION? \n >"))
+        self.friction = values[1]
     def draw(self, window):
         pygame.draw.rect(window, self.colour, self.mybox)
     def update(self):
