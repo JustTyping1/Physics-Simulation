@@ -1,5 +1,8 @@
-from cmath import rect
+
+import sys
+from colorama import Cursor
 import pygame
+import math
 
 pygame.init()
 
@@ -14,6 +17,7 @@ clock = pygame.time.Clock()
 
 window = pygame.display.set_mode((400, 400))
 
+
 class Box():
     def __init__(self, x, y):
         mybox = pygame.Rect(x, y, 32, 32)
@@ -27,6 +31,7 @@ class Box():
         self.right_pressed = False
         self.up_pressed = False
         self.down_pressed = True
+        self.mousefollow = False
         self.gravity = 9.8
         self.speed = 4
     def draw(self, window):
@@ -54,10 +59,22 @@ class Box():
             self.x = 368
         if self.y >= 328:
             self.y = 328
+        elif self.y <= 328:
+            self.down_pressed = True
 
 
         self.mybox = pygame.Rect(self.x, self.y, 32, 32)
-        
+    def restart(self):
+        self.x = 200
+        self.y = 200
+    def drag(self):
+        if self.mousefollow == True:
+            self.x = pygame.mouse.get_pos()[0]
+            self.y = pygame.mouse.get_pos()[1]
+        else:
+            pass
+
+              
 
 pygame.display.set_caption("Physics simulator")
 
@@ -70,6 +87,7 @@ while running:
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT:
             pygame.quit()
+            sys.exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 player.left_pressed = True
@@ -79,6 +97,8 @@ while running:
                 player.up_pressed = True
             if event.key == pygame.K_DOWN:
                 player.down_pressed = True
+            if event.key == pygame.K_r:
+                player.restart()
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
                 player.left_pressed = False
@@ -88,10 +108,18 @@ while running:
                 player.up_pressed = False
             if event.key == pygame.K_DOWN:
                 player.down_pressed = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if pygame.mouse.get_pos()[0] >= player.x and pygame.mouse.get_pos()[0] <= (player.x + 32) and pygame.mouse.get_pos()[1] >= player.y and pygame.mouse.get_pos()[0] <= (player.x + 32):
+                player.mousefollow = True
+            else:
+                pass
+        if event.type == pygame.MOUSEBUTTONUP:
+            player.mousefollow = False  
 
     window.fill(navy)
     player.draw(window)
     player.update()
+    player.drag()
     pygame.draw.rect(window, dgreen, pygame.Rect(0, 360, 400, 40))
     pygame.display.flip()
     clock.tick(120)
