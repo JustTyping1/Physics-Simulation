@@ -8,7 +8,7 @@ def run():
 
     def getval():
         global values
-        values = (gravityslider.get(), frictionslider.get())
+        values = [gravityslider.get(), frictionslider.get(), speedslider.get()]
 
     window.title("Control Panel!")
 
@@ -17,6 +17,12 @@ def run():
     global gravityslider
     gravityslider = tk.Scale( from_ = 0, to_ = 30, orient = tk.HORIZONTAL)
     gravityslider.pack()
+
+    val2 = tk.Label(text = "Speed")
+    val2.pack()
+    global speedslider
+    speedslider = tk.Scale(window, from_ = 0, to_ = 10, orient = tk.HORIZONTAL)
+    speedslider.pack()
 
     val3 = tk.Label(text = "Friction")
     val3.pack()
@@ -60,7 +66,7 @@ class Box():
         self.down_pressed = True
         self.mousefollow = False
         self.gravity = values[0]
-        self.speed = 4
+        self.speed = values[2]
         self.terminalvel = 798.8
         self.friction = values[1]
     def draw(self, window):
