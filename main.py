@@ -1,11 +1,6 @@
 import sys
 import pygame
 import math
-from __controlpanel__ import sendvals
-from __controlpanel__ import run
-
-
-run()
 
 pygame.init()
 
@@ -35,18 +30,21 @@ class Box():
         self.up_pressed = False
         self.down_pressed = True
         self.mousefollow = False
-        self.gravity = sendvals()[0]
+        self.gravity = float(input("WHAT IS THE GRAVITATIONAL ACCELERATION? \n >"))
         self.speed = 4
         self.terminalvel = 798.8
+        self.friction = float(input("WHAT IS THE FORCE EXERTED BY FRICTION? \n >"))
     def draw(self, window):
         pygame.draw.rect(window, self.colour, self.mybox)
     def update(self):
+        if self.friction >= self.speed:
+            self.friction = self.speed
         self.dx = 0
         self.dy = 0
         if self.left_pressed and not self.right_pressed:
-            self.dx = -self.speed + sendvals()[1]
+            self.dx = -self.speed + self.friction
         if self.right_pressed and not self.left_pressed:
-            self.dx = self.speed - sendvals()[1]
+            self.dx = self.speed - self.friction
         if self.up_pressed and not self.down_pressed:
             self.dy = -self.speed
         if self.down_pressed and not self.up_pressed:
